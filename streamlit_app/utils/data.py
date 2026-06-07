@@ -33,7 +33,7 @@ DS_BASE_URL = os.environ.get(
 ).rstrip("/")
 DS_SQL_PATH = "/sql/analytical"
 
-DS_API_KEY = os.environ.get("DATA_SOLUTIONS_API_KEY", "")
+DS_API_KEY = os.environ.get("DATA_SOLUTIONS_API_KEY") or st.secrets.get("DATA_SOLUTIONS_API_KEY", "")
 COMPANIES_HOUSE_API_KEY = os.environ.get("COMPANIES_HOUSE_API_KEY", "")
 
 DB_PATH = Path(__file__).resolve().parent.parent / "data" / "cases.db"
