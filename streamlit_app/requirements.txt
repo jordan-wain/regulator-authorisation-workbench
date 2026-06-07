@@ -1,0 +1,9 @@
+streamlit>=1.32.0
+pandas>=2.0.0
+plotly>=5.18.0
+requests>=2.31.0
+
+# Optional — enables PDF (not just HTML) evidence-pack export.
+# Requires system libraries (cairo, pango). If install is problematic,
+# the app falls back to HTML automatically.
+# weasyprint>=60.0
