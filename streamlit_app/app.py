@@ -82,6 +82,18 @@ CUSTODY_OPTIONS = [
 ]
 
 
+DEFAULTS = {
+    "second_reviewer": "",
+    "crypto_activities": "", "declared_transaction_count": "",
+    "mlro_name": "", "mlro_experience": "",
+    "financial_projections_y1": "", "financial_projections_y3": "",
+    "flow_of_funds_description": "", "bwra_reference": "",
+    "customer_risk_methodology": "", "blockchain_monitoring_tools": "",
+    "group_structure": "", "travel_rule_compliance": "",
+    "outsourcing_arrangements": "",
+}
+
+
 # ---------------------------------------------------------------------------
 # Demo cases (#6)
 # ---------------------------------------------------------------------------
@@ -812,6 +824,65 @@ def sidebar() -> None:
         intake["prior_denial_detail"] = st.text_area("If Yes — jurisdictions + dates",
             value=intake.get("prior_denial_detail", ""), height=60)
 
+
+        st.divider()
+        st.subheader("📋 FCA Application Fields")
+        st.caption("Mapped to the FCA Application for Registration as a Cryptoasset Business form")
+
+        st.session_state.setdefault("crypto_activities", "")
+        st.session_state.crypto_activities = st.selectbox("Cryptoasset Activities (FCA Q3.1)",
+            ["", "Fiat-to-Crypto Exchange", "Crypto-to-Crypto Exchange", "Custodian Wallet Provider", "ATM Operator", "Multiple (see note)"],
+            index=["", "Fiat-to-Crypto Exchange", "Crypto-to-Crypto Exchange", "Custodian Wallet Provider", "ATM Operator", "Multiple (see note)"].index(st.session_state.get("crypto_activities", "")) if st.session_state.get("crypto_activities", "") in ["", "Fiat-to-Crypto Exchange", "Crypto-to-Crypto Exchange", "Custodian Wallet Provider", "ATM Operator", "Multiple (see note)"] else 0)
+        st.caption("🔗 Validated by: Phase 3 counterparty mix (P3.1)")
+
+        st.session_state.setdefault("declared_transaction_count", "")
+        st.session_state.declared_transaction_count = st.text_input("Declared Transaction Count (per period)", value=st.session_state.declared_transaction_count)
+        st.caption("🔗 Validated by: Phase 2 P2.2 + Phase 3 P3.4")
+
+        st.session_state.setdefault("mlro_name", "")
+        st.session_state.mlro_name = st.text_input("MLRO Name", value=st.session_state.mlro_name)
+        st.caption("🔗 Validated by: Companies House officers lookup")
+
+        st.session_state.setdefault("mlro_experience", "")
+        st.session_state.mlro_experience = st.text_area("MLRO Experience & Qualifications", value=st.session_state.mlro_experience, height=60)
+        st.caption("📝 Attestation only")
+
+        st.session_state.setdefault("financial_projections_y1", "")
+        st.session_state.financial_projections_y1 = st.text_input("Year 1 Revenue Projection (GBP)", value=st.session_state.financial_projections_y1)
+        st.caption("📝 Attestation only")
+
+        st.session_state.setdefault("financial_projections_y3", "")
+        st.session_state.financial_projections_y3 = st.text_input("Year 3 Revenue Projection (GBP)", value=st.session_state.financial_projections_y3)
+        st.caption("📝 Attestation only")
+
+        st.session_state.setdefault("flow_of_funds_description", "")
+        st.session_state.flow_of_funds_description = st.text_area("Flow of Funds Description", value=st.session_state.flow_of_funds_description, height=60)
+        st.caption("🔗 Partially validated by: Phase 3 sankey (P3.2)")
+
+        st.session_state.setdefault("bwra_reference", "")
+        st.session_state.bwra_reference = st.text_input("Business-Wide Risk Assessment (BWRA) Reference", value=st.session_state.bwra_reference)
+        st.caption("🔗 Partially validated by: Phase 5 P5.1/P5.6")
+
+        st.session_state.setdefault("customer_risk_methodology", "")
+        st.session_state.customer_risk_methodology = st.text_area("Customer Risk Assessment Methodology", value=st.session_state.customer_risk_methodology, height=60)
+        st.caption("🔗 Partially validated by: Phase 4 P4.2/P4.3")
+
+        st.session_state.setdefault("blockchain_monitoring_tools", "")
+        st.session_state.blockchain_monitoring_tools = st.text_input("Blockchain Monitoring Tools Used", value=st.session_state.blockchain_monitoring_tools, placeholder="e.g. Chainalysis, Elliptic, TRM Labs")
+        st.caption("📝 Attestation only")
+
+        st.session_state.setdefault("group_structure", "")
+        st.session_state.group_structure = st.text_area("Group Structure / Close Links", value=st.session_state.group_structure, height=60)
+        st.caption("🔗 Validated by: Affiliated Firms + Companies House PSC")
+
+        st.session_state.setdefault("travel_rule_compliance", "")
+        st.session_state.travel_rule_compliance = st.text_area("Travel Rule Compliance (Part 7A MLR)", value=st.session_state.travel_rule_compliance, height=60)
+        st.caption("📝 Attestation only")
+
+        st.session_state.setdefault("outsourcing_arrangements", "")
+        st.session_state.outsourcing_arrangements = st.text_area("Outsourcing Arrangements", value=st.session_state.outsourcing_arrangements, height=60)
+        st.caption("📝 Attestation only")
+
         saved = st.form_submit_button("💾 Save intake")
         if saved:
             st.session_state["applicant_name"] = (
@@ -981,6 +1052,8 @@ def tab_case_summary() -> None:
         "declared_user_count", "declared_business_model",
         "declared_custody_arrangement", "declared_ubos", "declared_peer_cohort",
         "mlro_name", "bwra_reference", "crypto_activities",
+        "declared_transaction_count", "mlro_experience",
+        "blockchain_monitoring_tools", "group_structure",
     ]
     missing = [k for k in expected if not intake.get(k)]
     if missing:
